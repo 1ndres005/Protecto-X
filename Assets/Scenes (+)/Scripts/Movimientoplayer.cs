@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movimiento del jugador")]
     public CharacterController controller;
     public float speed = 5f;
+    public float sprintMultiplier = 1.5f; // Multiplicador de velocidad al sprintar
     public float jumpHeight = 2f;
     public float gravity = -9.81f;
     
@@ -12,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public Transform playerCamera;
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
-    private float yRotation = 0f;
     
     [Header("Detección de suelo")]
     public Transform groundCheck;
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
 
-    [Header("Animations")]
+    [Header("Animaciones")]
     [SerializeField] private Animator animator;
 
     [Header("Ataque")]
@@ -33,10 +33,11 @@ public class PlayerController : MonoBehaviour
     public float edgeGrabDistance = 0.5f;
     public bool isHanging = false;
 
-    //Checkpoint
+    // Checkpoint
     private Vector3 lastCheckpointPosition;
+    public Transform spawnPoint;
 
-        public void GuardarCheckpoint(Vector3 checkpointPos)
+    public void GuardarCheckpoint(Vector3 checkpointPos)
     {
         lastCheckpointPosition = checkpointPos;
         Debug.Log("Checkpoint guardado en: " + lastCheckpointPosition);
@@ -44,8 +45,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // Bloquea el cursor en el centro de la pantalla
-        lastCheckpointPosition = transform.position; // Guarda la posición inicial como el primer checkpoint
+        Cursor.lockState = CursorLockMode.Locked;
+        lastCheckpointPosition = spawnPoint ? spawnPoint.position : transform.position;
+        transform.position = lastCheckpointPosition;
     }
 
     void Update()
@@ -66,33 +68,35 @@ public class PlayerController : MonoBehaviour
         {
             ActivarDispositivo();
         }
-         if (transform.position.y < -10) // Si el jugador cae del mapa
+        if (transform.position.y < -10) // Si el jugador cae del mapa
         {
-        ReaparecerEnCheckpoint();
+            ReaparecerEnCheckpoint();
         }
     }
 
     void MovimientoJugador()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.4f, groundMask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
 
-    // Capturar entrada de movimiento en relación con la cámara
-        float moveX = Input.GetAxis("Horizontal");  // A y D
-        float moveZ = Input.GetAxis("Vertical");    // W y S
-
-    // Dirección de movimiento basada en la cámara
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
         Vector3 moveDirection = (playerCamera.forward * moveZ + playerCamera.right * moveX).normalized;
-        moveDirection.y = 0; // evitar inclinaciones
+        moveDirection.y = 0;
 
-        if(moveX != 0 || moveZ != 0) animator?.SetFloat("Speed", 1); // Animacion movimiento
+        float currentSpeed = speed;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            currentSpeed *= sprintMultiplier;
+        }
+
+        if (moveX != 0 || moveZ != 0) animator?.SetFloat("Speed", 1);
         else animator?.SetFloat("Speed", 0);
 
-        controller.Move(moveDirection * speed * Time.deltaTime);
-
+        controller.Move(moveDirection * currentSpeed * Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
@@ -100,26 +104,22 @@ public class PlayerController : MonoBehaviour
     void Saltar()
     {
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+       
     }
 
-   void RotacionCamara()
+    void RotacionCamara()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
-        // Rotar el personaje en el eje Y (horizontal)
         transform.Rotate(Vector3.up * mouseX);
-
-        // Ajustar la rotación vertical de la cámara
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Evita que la cámara gire demasiado arriba o abajo
-
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 
     void Atacar()
     {
-        animator.SetTrigger("Attack");
+        
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider enemy in hitEnemies)
         {
@@ -148,31 +148,20 @@ public class PlayerController : MonoBehaviour
             isHanging = false;
         }
     }
-    
 
-
-    private void OnTriggerEnter(Collider other)
-{
-    if (other.CompareTag("Player"))
-    {
-        Debug.Log("Checkpoint alcanzado por: " + other.name);
-        other.GetComponent<PlayerController>().GuardarCheckpoint(transform.position);
-    }
-}
     public void ReaparecerEnCheckpoint()
-{
-    if (lastCheckpointPosition != Vector3.zero)
     {
-        Vector3 spawnPosition = lastCheckpointPosition + Vector3.up * 1.5f; // Eleva el personaje
-        controller.enabled = false; // Desactiva el CharacterController para evitar colisiones raras
-        transform.position = spawnPosition;
-        controller.enabled = true;  // Reactiva el CharacterController
-        Debug.Log("Reapareciendo en checkpoint: " + spawnPosition);
-    }
-
+        if (lastCheckpointPosition != Vector3.zero)
+        {
+            Vector3 spawnPosition = lastCheckpointPosition + Vector3.up * 1.5f;
+            controller.enabled = false;
+            transform.position = spawnPosition;
+            controller.enabled = true;
+            Debug.Log("Reapareciendo en checkpoint: " + spawnPosition);
+        }
         else
         {
             Debug.LogWarning("No hay un checkpoint guardado, reapareciendo en el inicio.");
         }
-}
+    }
 }
