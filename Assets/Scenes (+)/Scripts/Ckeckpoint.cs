@@ -6,7 +6,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.CompareTag("Player")) // Si el jugador toca el checkpoint
         {
-            other.GetComponent<PlayerController>().GuardarCheckpoint(transform.position);
+            other.GetComponent<SpawnPointyCheckpoint>().GuardarCheckpoint(transform.position);
         }
     }
 }

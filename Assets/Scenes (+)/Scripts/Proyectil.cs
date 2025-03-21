@@ -1,30 +1,42 @@
 using UnityEngine;
+using TMPro; // Para manejar la UI con TextMeshPro
 
 public class Projectile : MonoBehaviour
 {
-    public float speed = 20f;
-    public float lifeTime = 3f;
-    public LayerMask hitLayers;
+    public float destroyDelay = 0.5f; // Tiempo antes de autodestruirse
+    public string[] targetTags = { "Enemy", "TargetObject" }; // Tags de los objetos válidos
+    public static int objectsDestroyed = 0; // Contador global
+
+    [Header("UI")]
+    public TMP_Text counterText; // Referencia al contador en la UI
 
     void Start()
     {
-        Destroy(gameObject, lifeTime);
+        // Destruir el proyectil automáticamente después de 5 segundos si no impacta nada
+        Destroy(gameObject, 5f);
     }
 
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Destroy(gameObject);
-
-        if ((hitLayers.value & (1 << other.gameObject.layer)) > 0)
+        // Verificar si el objeto impactado tiene un tag válido
+        foreach (string tag in targetTags)
         {
-            Debug.Log("Impacto en {other.gameObject.name} en la posición {other.transform.position} con el proyectil {gameObject.name}!");
-
+            if (other.CompareTag(tag))
+            {
+                objectsDestroyed++; // Incrementa el contador
+                UpdateUI(); // Actualiza el contador en la UI
+                Destroy(other.gameObject); // Destruye el objeto impactado
+                Destroy(gameObject, destroyDelay); // Destruye el proyectil
+                return;
+            }
         }
+    }
 
+    void UpdateUI()
+    {
+        if (counterText != null)
+        {
+            counterText.text = "Objetos destruidos: " + objectsDestroyed;
+        }
     }
 }

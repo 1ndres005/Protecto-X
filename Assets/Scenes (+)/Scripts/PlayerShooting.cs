@@ -1,59 +1,57 @@
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
+
 {
-    [Header("Configuración del Disparo")]
-    public GameObject projectilePrefab;
-    public Transform shootPoint;
-    public Camera playerCamera;
-    public LayerMask hitLayers;
-    public float shootForce = 500f;
-    
-    private bool isAiming = false;
+    [Header("Disparo")]
+    public GameObject bulletPrefab; // Prefab del proyectil
+    public Transform firePoint; // Punto de disparo
+    public float bulletSpeed = 20f; // Velocidad del proyectil
+    public float fireRate = 0.5f; // Tiempo entre disparos
+    private float nextFireTime = 0f; // Control del tiempo de disparo
+
+    [Header("Objeto Recolectable")]
+    public GameObject pickupItem; // Objeto a recoger
+    private bool canShoot = false; // ¿Puede disparar?
+
+    void Start()
+    {
+        if (pickupItem != null)
+        {
+            pickupItem.SetActive(true); // Asegura que el objeto esté activo
+        }
+    }
 
     void Update()
     {
-        Aiming();
-        if (isAiming)
-        {
-            RotateShootPoint();
-        }
-
-        if (isAiming && Input.GetMouseButtonDown(0)) 
+        if (canShoot && Input.GetButtonDown("Fire1") && Time.time >= nextFireTime)
         {
             Shoot();
-        }
-    }
-
-    void Aiming()
-    {
-        if (Input.GetMouseButton(1)) 
-        {
-            isAiming = true;
-        }
-        else 
-        {
-            isAiming = false;
-        }
-    }
-
-    void RotateShootPoint()
-    {
-        if (playerCamera != null && shootPoint != null)
-        {
-            shootPoint.rotation = Quaternion.LookRotation(playerCamera.transform.forward);
+            nextFireTime = Time.time + fireRate;
         }
     }
 
     void Shoot()
     {
-        GameObject newProjectile = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
-        Rigidbody rb = newProjectile.GetComponent<Rigidbody>();
-
-        if (rb != null)
+        if (bulletPrefab != null && firePoint != null)
         {
-            rb.AddForce(shootPoint.forward * shootForce);
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.velocity = firePoint.forward * bulletSpeed;
+            }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == pickupItem) // Si el jugador toca el objeto
+        {
+            canShoot = true; // Habilita el disparo
+            Destroy(pickupItem); // Destruye el objeto recolectable
         }
     }
 }
+
 
