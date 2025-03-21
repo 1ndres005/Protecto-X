@@ -4049,10 +4049,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: 06_MusketShop_Pistol
       objectReference: {fileID: 0}
+    - target: {fileID: 7077556017053680602, guid: dc2c916f047ff644a92e6e295170157e, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 924046305810176820, guid: dc2c916f047ff644a92e6e295170157e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1168326063}
   m_SourcePrefab: {fileID: 100100000, guid: dc2c916f047ff644a92e6e295170157e, type: 3}
 --- !u!4 &663713336 stripped
 Transform:
@@ -7877,6 +7884,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8915715655105293615, guid: 5693a57c90ef40744848833e4aa5eff8, type: 3}
   m_PrefabInstance: {fileID: 1135146579}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1168326059 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 924046305810176820, guid: dc2c916f047ff644a92e6e295170157e, type: 3}
+  m_PrefabInstance: {fileID: 663713335}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1168326063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168326059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a2ef8f3acae074ba7e53abb1cf0cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1172571302
 GameObject:
   m_ObjectHideFlags: 0
@@ -14152,7 +14176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1528440011218675264, guid: 9a297dc57e88b464f94070684a8ae8ab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.09
+      value: -1.52
       objectReference: {fileID: 0}
     - target: {fileID: 1528440011218675264, guid: 9a297dc57e88b464f94070684a8ae8ab, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14288,15 +14312,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8430826395111108324, guid: 44a915b466ac34f478f0004870c5667f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 165.2522
+      value: 70.5
       objectReference: {fileID: 0}
     - target: {fileID: 8430826395111108324, guid: 44a915b466ac34f478f0004870c5667f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.006232
+      value: 8.78
       objectReference: {fileID: 0}
     - target: {fileID: 8430826395111108324, guid: 44a915b466ac34f478f0004870c5667f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -50.57702
+      value: -138.3
       objectReference: {fileID: 0}
     - target: {fileID: 8430826395111108324, guid: 44a915b466ac34f478f0004870c5667f, type: 3}
       propertyPath: m_LocalRotation.w
