@@ -8,32 +8,16 @@ public class PlataformaMovil : MonoBehaviour
     public float velocidad = 3f;
 
     private Vector3 destinoActual;
-    private Transform jugador;
-    private CharacterController jugadorController;
-    private Vector3 ultimoPosicionPlataforma;
 
     void Start()
     {
         destinoActual = puntoB.position;
-        ultimoPosicionPlataforma = transform.position;
     }
 
     void Update()
     {
-        // Guarda la posición antes de moverse
-        Vector3 posicionAnterior = transform.position;
-
-        // Mueve la plataforma
+        // Mueve la plataforma entre los puntos A y B
         transform.position = Vector3.MoveTowards(transform.position, destinoActual, velocidad * Time.deltaTime);
-
-        // Calcula el desplazamiento de la plataforma
-        Vector3 desplazamiento = transform.position - posicionAnterior;
-
-        // Si el jugador está sobre la plataforma, moverlo con ella
-        if (jugador != null && jugadorController != null)
-        {
-            jugadorController.Move(desplazamiento);
-        }
 
         // Cambia de dirección cuando llega al destino
         if (Vector3.Distance(transform.position, destinoActual) < 0.1f)
@@ -46,8 +30,8 @@ public class PlataformaMovil : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            jugador = other.transform;
-            jugadorController = jugador.GetComponent<CharacterController>();
+            // Hacer que el jugador sea hijo de la plataforma
+            other.transform.SetParent(transform);
         }
     }
 
@@ -55,8 +39,8 @@ public class PlataformaMovil : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            jugador = null;
-            jugadorController = null;
+            // Quitar la paternidad para que el jugador no se mueva con la plataforma
+            other.transform.SetParent(null);
         }
     }
 }
