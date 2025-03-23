@@ -45,4 +45,11 @@ public class FirstPersonMovement : MonoBehaviour
         if (targetVelocity.x != 0 || targetVelocity.y != 0) animator?.SetFloat("Speed", 1);
         else animator?.SetFloat("Speed", 0);
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("FinalObject"))// Al entrar en contacto con el objeto final deshabilitara el movimiento del jugador
+        { 
+                GetComponent<FirstPersonMovement>().enabled = false; // Deshabilita el movimiento
+        }
+    }
 }
