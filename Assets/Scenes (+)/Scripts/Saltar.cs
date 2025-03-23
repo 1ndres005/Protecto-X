@@ -12,19 +12,19 @@ public class Jump : MonoBehaviour
 
     void Reset()
     {
-        // Try to get groundCheck.
+        // Deteccion de que no se encuentre en el aire.
         groundCheck = GetComponentInChildren<GroundCheck>();
     }
 
     void Awake()
     {
-        // Get rigidbody.
+        // Obtener RB.
         rigidbody = GetComponent<Rigidbody>();
     }
 
     void LateUpdate()
     {
-        // Jump when the Jump button is pressed and we are on the ground.
+        // Saltar cuando se presione la tecla correspondiente.
         if (Input.GetButtonDown("Jump") && (!groundCheck || groundCheck.isGrounded))
         {
             rigidbody.AddForce(Vector3.up * 100 * jumpStrength);

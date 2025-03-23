@@ -1,42 +1,38 @@
 using UnityEngine;
-using TMPro; // Para manejar la UI con TextMeshPro
 
 public class Projectile : MonoBehaviour
 {
-    public float destroyDelay = 0.5f; // Tiempo antes de autodestruirse
-    public string[] targetTags = { "Enemy", "TargetObject" }; // Tags de los objetos válidos
-    public static int objectsDestroyed = 0; // Contador global
-
-    [Header("UI")]
-    public TMP_Text counterText; // Referencia al contador en la UI
+    public float destroyDelay = 0.5f;
+    private ObjectiveCounterBottles counterBottles;
+    private ObjectiveCounterMasks counterMasks;
 
     void Start()
     {
-        // Destruir el proyectil automáticamente después de 5 segundos si no impacta nada
-        Destroy(gameObject, 5f);
+        counterBottles = FindObjectOfType<ObjectiveCounterBottles>();
+        counterMasks = FindObjectOfType<ObjectiveCounterMasks>();
+
+        Destroy(gameObject, 5f);  
     }
 
     void OnTriggerEnter(Collider other)
     {
-        // Verificar si el objeto impactado tiene un tag válido
-        foreach (string tag in targetTags)
+        if (other.CompareTag("Bottle") && counterBottles != null)
         {
-            if (other.CompareTag(tag))
-            {
-                objectsDestroyed++; // Incrementa el contador
-                UpdateUI(); // Actualiza el contador en la UI
-                Destroy(other.gameObject); // Destruye el objeto impactado
-                Destroy(gameObject, destroyDelay); // Destruye el proyectil
-                return;
-            }
+            counterBottles.UpdateCounter();
+            Destroy(other.gameObject);
         }
-    }
+        else if (other.CompareTag("Mask") && counterMasks != null)
+        {
+            counterMasks.UpdateCounter();
+            Destroy(other.gameObject);
+        }
 
-    void UpdateUI()
-    {
-        if (counterText != null)
-        {
-            counterText.text = "Objetos destruidos: " + objectsDestroyed;
-        }
+        Destroy(gameObject, destroyDelay);
     }
 }
+
+
+
+
+
+

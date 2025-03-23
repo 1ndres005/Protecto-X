@@ -9,7 +9,7 @@ public class GroundCheck : MonoBehaviour
     [Tooltip("Whether this transform is grounded now.")]
     public bool isGrounded = true;
     /// <summary>
-    /// Called when the ground is touched again.
+    /// Llamar cuando el jugador collisiones con el suelo.
     /// </summary>
     public event System.Action Grounded;
 
@@ -20,22 +20,22 @@ public class GroundCheck : MonoBehaviour
 
     void LateUpdate()
     {
-        // Check if we are grounded now.
+        // Chequea que se encuentre el suelo.
         bool isGroundedNow = Physics.Raycast(RaycastOrigin, Vector3.down, distanceThreshold * 2);
 
-        // Call event if we were in the air and we are now touching the ground.
+        // llama el evento en caso de que el jugador no detecte el suelo.
         if (isGroundedNow && !isGrounded)
         {
             Grounded?.Invoke();
         }
 
-        // Update isGrounded.
+        // Actualiza cuando vuelve a tocar el suelo.
         isGrounded = isGroundedNow;
     }
 
     void OnDrawGizmosSelected()
     {
-        // Draw a line in the Editor to show whether we are touching the ground.
+        // Dibuja linea en el suelo para que en el motor se pueda configurar.
         Debug.DrawLine(RaycastOrigin, RaycastOrigin + Vector3.down * RaycastDistance, isGrounded ? Color.white : Color.red);
     }
 }

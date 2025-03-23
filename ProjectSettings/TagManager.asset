@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Key
   - FinalObject
+  - Mask
+  - Bottle
+  - MaskLevelTrigger
+  - ShootingKey
+  - WeaponPickup
   layers:
   - Default
   - TransparentFX

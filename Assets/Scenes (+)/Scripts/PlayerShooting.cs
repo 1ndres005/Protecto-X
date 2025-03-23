@@ -1,25 +1,25 @@
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
-
 {
     [Header("Disparo")]
-    public GameObject bulletPrefab; // Prefab del proyectil
-    public Transform firePoint; // Punto de disparo
-    public float bulletSpeed = 20f; // Velocidad del proyectil
-    public float fireRate = 0.5f; // Tiempo entre disparos
-    private float nextFireTime = 0f; // Control del tiempo de disparo
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float bulletSpeed = 20f;
+    public float fireRate = 0.5f;
+    private float nextFireTime = 0f;
 
-    [Header("Objeto Recolectable")]
-    public GameObject pickupItem; // Objeto a recoger
-    private bool canShoot = false; // ¿Puede disparar?
+    [Header("Recolectar Arma")]
+    private bool canShoot = false;
+
+    [Header("UI")]
+    public GameObject crosshair;
+    public GameObject playerWeapon; // Referencia al arma del jugador
+    public TimerUI timerUI;
 
     void Start()
     {
-        if (pickupItem != null)
-        {
-            pickupItem.SetActive(true); // Asegura que el objeto esté activo
-        }
+        DisableWeapon(); // El arma inicia invisible
     }
 
     void Update()
@@ -38,20 +38,37 @@ public class PlayerShooting : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
             if (rb != null)
-            {
                 rb.velocity = firePoint.forward * bulletSpeed;
-            }
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == pickupItem) // Si el jugador toca el objeto
+        if (other.CompareTag("WeaponPickup")) // Detectar cualquier arma con esta etiqueta
         {
-            canShoot = true; // Habilita el disparo
-            Destroy(pickupItem); // Destruye el objeto recolectable
+            EnableWeapon();
+            Destroy(other.gameObject); // Destruir solo el arma recogida
         }
     }
-}
 
+    public void EnableWeapon()
+    {
+        canShoot = true;
+        if (crosshair != null) crosshair.SetActive(true);
+        if (playerWeapon != null) playerWeapon.SetActive(true); // Mostrar el arma
+
+        if (timerUI != null)
+        {
+            timerUI.ResetTimer(); // Reiniciar el temporizador al recoger el arma
+            timerUI.StartTimer(); // Asegurar que se inicie
+        }
+    }
+
+    public void DisableWeapon()
+    {
+        canShoot = false;
+        if (crosshair != null) crosshair.SetActive(false);
+        if (playerWeapon != null) playerWeapon.SetActive(false); // Ocultar el arma
+    }
+}
 

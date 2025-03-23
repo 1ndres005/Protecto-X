@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3474197267507613227}
   - component: {fileID: 1716473200453122785}
   - component: {fileID: 7077556017053680602}
+  - component: {fileID: 8317730166460088577}
   m_Layer: 0
   m_Name: 06_MusketShop_Pistol
   m_TagString: Untagged
@@ -105,3 +106,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0257838, y: 0.32336572, z: 0.76709604}
   m_Center: {x: -0.706947, y: 0.029940888, z: 0.024636075}
+--- !u!114 &8317730166460088577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924046305810176820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8137146dc59164a93cd270b05f9a7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerWeapon: {fileID: 0}
+  pickupWeapon: {fileID: 924046305810176820}
