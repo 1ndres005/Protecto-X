@@ -6108,7 +6108,6 @@ GameObject:
   - component: {fileID: 7687164448267188841}
   - component: {fileID: 279496915189110871}
   - component: {fileID: 3586557244489228268}
-  - component: {fileID: 4053564975150594081}
   - component: {fileID: 8860958335379424062}
   m_Layer: 0
   m_Name: Player 1
@@ -6217,19 +6216,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpStrength: 2
   groundCheck: {fileID: 7132219269717819576}
---- !u!114 &4053564975150594081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2236774594757970961}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac8611ba8bedd364d8c4078299651757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 0}
 --- !u!114 &8860958335379424062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6242,13 +6228,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 209370862080cff4491c5329f1303767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 0}
+  projectilePrefab: {fileID: 0}
   firePoint: {fileID: 0}
-  bulletSpeed: 20
-  fireRate: 0.5
-  pickupItem: {fileID: 0}
+  projectileSpeed: 20
   crosshair: {fileID: 0}
-  timerUI: {fileID: 0}
 --- !u!1 &2360199272647592401
 GameObject:
   m_ObjectHideFlags: 0

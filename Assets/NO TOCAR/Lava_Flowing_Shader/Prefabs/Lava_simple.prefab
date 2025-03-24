@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2300000}
   - component: {fileID: 11400000}
   m_Layer: 0
-  m_Name: Lava_distort
+  m_Name: Lava_simple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 787cb25de3401c44b939f2599cda764c, type: 2}
+  - {fileID: 2100000, guid: 6042eaad9823b6f488f160b2bce47ac7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

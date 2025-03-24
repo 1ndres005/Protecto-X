@@ -1,19 +1,25 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
 public class KeyCollector : MonoBehaviour
 {
-    public int totalKeys = 4; // Ajusta el número total de llaves necesarias
+    public int totalKeys = 4; // Número total de llaves necesarias
     private int keyCount = 0;
     public TMP_Text keyText; // UI para mostrar las llaves recolectadas
-    public GameObject finalObject; // Objeto que se desbloquea al recolectar todas las llaves
+    public GameObject finalObject; // Cofre final que se desbloquea al recolectar todas las llaves
+    public GameObject messagePanel; // Panel de mensaje que aparecerá al recolectar todas las llaves
 
     void Start()
     {
         UpdateUI();
         if (finalObject != null)
         {
-            finalObject.SetActive(false); // Asegurar que está desactivado al inicio
+            finalObject.SetActive(false); // Asegurar que el cofre final está oculto al inicio
+        }
+        if (messagePanel != null)
+        {
+            messagePanel.SetActive(false); // Asegurar que el panel de mensaje está oculto al inicio
         }
     }
 
@@ -24,11 +30,21 @@ public class KeyCollector : MonoBehaviour
             keyCount++;
             UpdateUI();
             Destroy(other.gameObject);
-        }
 
-        if (other.CompareTag("FinalObject") && keyCount >= totalKeys)
-        {
-            UnlockFinalObject();
+            if (keyCount >= totalKeys)
+            {
+                if (messagePanel != null)
+                {
+                    messagePanel.SetActive(true); // Mostrar el panel de mensaje
+                    StartCoroutine(HideMessagePanel()); // Ocultarlo después de 6 segundos
+                }
+
+                if (finalObject != null)
+                {
+                    finalObject.SetActive(true); // Mostrar el cofre final
+                    Debug.Log("¡Cofre final activado!"); // Mensaje de depuración en la consola
+                }
+            }
         }
     }
 
@@ -40,11 +56,9 @@ public class KeyCollector : MonoBehaviour
         }
     }
 
-    void UnlockFinalObject()
+    IEnumerator HideMessagePanel()
     {
-        if (finalObject != null)
-        {
-            finalObject.SetActive(true); // Activa el objeto final cuando se recolectan todas las llaves
-        }
+        yield return new WaitForSeconds(6); // Esperar 6 segundos
+        messagePanel.SetActive(false); // Ocultar el panel de mensaje
     }
 }
