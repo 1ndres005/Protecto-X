@@ -30,7 +30,11 @@ Material:
     - _LavaTex:
         m_Texture: {fileID: 2800000, guid: 93a726948508cc14eab67fb1abe2daa8, type: 3}
         m_Scale: {x: 1, y: 1}
+<<<<<<< Updated upstream:Assets/Scenes (+)/Material/Materials/mtl_lava_distort.mat
         m_Offset: {x: 4.7350483, y: 0}
+=======
+        m_Offset: {x: 0.89311415, y: 0}
+>>>>>>> Stashed changes:Assets/Scenes (+)/Game completo/Decoración/Material/Materials/mtl_lava_distort.mat
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 348fa4d278c53ad4dacd07df1e63a248, type: 3}
         m_Scale: {x: 1, y: 1}
