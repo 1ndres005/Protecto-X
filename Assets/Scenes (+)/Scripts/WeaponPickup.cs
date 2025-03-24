@@ -2,20 +2,21 @@ using UnityEngine;
 
 public class WeaponPickup : MonoBehaviour
 {
-    public GameObject playerWeapon; // Referencia al arma del jugador
-    public GameObject pickupWeapon; // Arma en el mapa
+    public GameObject playerWeapon; // Referencia al arma del jugador (inicialmente invisible)
+    public GameObject weaponOnGround; // Arma visible en el suelo
+    public GameObject crosshair; // Punto de mira en la UI
+    public PlayerShooting playerShooting; // Referencia al script de disparo
+    public Timer timer; // Referencia al temporizador
 
-    void Start()
-    {
-        playerWeapon.SetActive(false); // Ocultar el arma del jugador al inicio
-    }
-
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerWeapon.SetActive(true); // Activar el arma del jugador
-            pickupWeapon.SetActive(false); // Desaparecer el arma del mapa
+            playerWeapon.SetActive(true); // Hacer visible el arma del jugador
+            weaponOnGround.SetActive(false); // Ocultar el arma en el suelo
+            crosshair.SetActive(true); // Activar el punto de mira en la UI
+            playerShooting.EnableShooting(); // Habilitar la mecánica de disparo
+            timer.StartTimer(); // Iniciar el temporizador de 2 minutos
         }
     }
 }

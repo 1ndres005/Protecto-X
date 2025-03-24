@@ -11,6 +11,10 @@ TagManager:
   - MaskLevelTrigger
   - ShootingKey
   - WeaponPickup
+  - Weapon
+  - DestructibleObject
+  - Projectile
+  - KeyLevel4
   layers:
   - Default
   - TransparentFX

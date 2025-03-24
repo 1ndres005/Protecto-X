@@ -3,45 +3,30 @@ using TMPro;
 
 public class KeyCollector : MonoBehaviour
 {
-    public TMP_Text keyText; // Referencia al contador de llaves en la UI
-    public TMP_Text finalMessage; // Mensaje de nivel completado
-    public GameObject finalObject; // Objeto final (cofre, puerta, etc.)
-    public TimerUI timerUI; // Referencia al temporizador
-    public PlayerShooting playerShooting; // Referencia al disparo
-
-    private int keyCount = 0; // Contador de llaves
-    private int totalKeys = 4; // Número de llaves requeridas
+    public int totalKeys = 4; // Ajusta el número total de llaves necesarias
+    private int keyCount = 0;
+    public TMP_Text keyText; // UI para mostrar las llaves recolectadas
+    public GameObject finalObject; // Objeto que se desbloquea al recolectar todas las llaves
 
     void Start()
     {
-        keyText.text = $"Llaves: 0 / {totalKeys}";
-        finalMessage.gameObject.SetActive(false);
+        UpdateUI();
+        if (finalObject != null)
+        {
+            finalObject.SetActive(false); // Asegurar que está desactivado al inicio
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Key")) // Llave normal
+        if (other.CompareTag("Key") || other.CompareTag("KeyLevel4")) // Detecta llaves de cualquier nivel
         {
             keyCount++;
             UpdateUI();
             Destroy(other.gameObject);
         }
 
-        if (other.CompareTag("ShootingKey")) // Llave de disparo
-        {
-            keyCount++;
-            UpdateUI();
-            playerShooting.DisableWeapon(); // Desactiva el arma
-            timerUI.StopTimer(); // Detiene el temporizador
-            Destroy(other.gameObject);
-        }
-
-        if (other.CompareTag("MaskLevelTrigger")) // Si entra al nivel de máscaras
-        {
-            timerUI.ResetTimer(); // Reinicia el temporizador
-        }
-
-        if (other.CompareTag("FinalObject") && keyCount >= totalKeys) // Si abre el objeto final
+        if (other.CompareTag("FinalObject") && keyCount >= totalKeys)
         {
             UnlockFinalObject();
         }
@@ -49,12 +34,17 @@ public class KeyCollector : MonoBehaviour
 
     void UpdateUI()
     {
-        keyText.text = $"Llaves: {keyCount} / {totalKeys}";
+        if (keyText != null)
+        {
+            keyText.text = $"Llaves: {keyCount} / {totalKeys}";
+        }
     }
 
     void UnlockFinalObject()
     {
-        finalMessage.gameObject.SetActive(true);
-        finalMessage.text = "¡Objeto final desbloqueado!";
+        if (finalObject != null)
+        {
+            finalObject.SetActive(true); // Activa el objeto final cuando se recolectan todas las llaves
+        }
     }
 }

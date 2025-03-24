@@ -1,38 +1,40 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Proyectil : MonoBehaviour
 {
-    public float destroyDelay = 0.5f;
-    private ObjectiveCounterBottles counterBottles;
-    private ObjectiveCounterMasks counterMasks;
+    public float speed = 20f;
+    public float maxLifetime = 3f; // Tiempo máximo antes de autodestruirse
+    public Rigidbody rb;
 
     void Start()
     {
-        counterBottles = FindObjectOfType<ObjectiveCounterBottles>();
-        counterMasks = FindObjectOfType<ObjectiveCounterMasks>();
+        if (rb == null)
+        {
+            Debug.LogError("⚠️ ERROR: No se ha asignado un Rigidbody en el script Proyectil.");
+            return;
+        }
 
-        Destroy(gameObject, 5f);  
+        rb.velocity = transform.forward * speed;
+        Destroy(gameObject, maxLifetime); // Destruir después de un tiempo para evitar objetos persistentes
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Bottle") && counterBottles != null)
+        Debug.Log("💥 Impacto con: " + collision.collider.name); // Ver qué objeto está tocando el proyectil
+
+        DestructibleObject destructible = collision.collider.GetComponent<DestructibleObject>();
+
+        if (destructible != null)
         {
-            counterBottles.UpdateCounter();
-            Destroy(other.gameObject);
+            Debug.Log("✅ Objeto destructible detectado y destruido: " + collision.collider.name);
+            destructible.TakeDamage(); // Llama al método en DestructibleObject
         }
-        else if (other.CompareTag("Mask") && counterMasks != null)
+        else
         {
-            counterMasks.UpdateCounter();
-            Destroy(other.gameObject);
+            Debug.Log("🚫 El objeto impactado NO es destructible: " + collision.collider.name);
         }
 
-        Destroy(gameObject, destroyDelay);
+        Destroy(gameObject); // Destruye el proyectil después del impacto
     }
 }
-
-
-
-
-
 

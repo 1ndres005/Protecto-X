@@ -1,48 +1,40 @@
 using UnityEngine;
 using TMPro;
 
-public class TimerUI : MonoBehaviour
+public class Timer : MonoBehaviour
 {
-    public TMP_Text timerText;
-    public float timeRemaining = 120f;
+    public float timeLimit = 120f; // 2 minutos
+    private float remainingTime;
     private bool isRunning = false;
+    public TextMeshProUGUI timerText; // Texto en la UI
 
-    void Start()
+    private void Start()
     {
-        timerText.text = "02:00";
+        timerText.gameObject.SetActive(false); // Ocultar el temporizador al inicio
     }
 
-    void Update()
+    private void Update()
     {
-        if (isRunning && timeRemaining > 0)
+        if (isRunning)
         {
-            timeRemaining -= Time.deltaTime;
-            UpdateTimerUI();
-        }
-    }
+            remainingTime -= Time.deltaTime;
+            UpdateUI();
 
-    void UpdateTimerUI()
-    {
-        int minutes = Mathf.FloorToInt(timeRemaining / 60);
-        int seconds = Mathf.FloorToInt(timeRemaining % 60);
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
     }
 
     public void StartTimer()
     {
+        remainingTime = timeLimit;
         isRunning = true;
+        timerText.gameObject.SetActive(true); // Mostrar temporizador en UI
     }
 
-    public void StopTimer()
+    private void UpdateUI()
     {
-        isRunning = false;
-    }
-
-    public void ResetTimer()
-    {
-        timeRemaining = 120f;
-        isRunning = true;
-        UpdateTimerUI();
+        int minutes = Mathf.FloorToInt(remainingTime / 60);
+        int seconds = Mathf.FloorToInt(remainingTime % 60);
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }
 

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1482779354720922126}
   m_Layer: 0
   m_Name: Projectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,7 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9551b6f4447d1dc4b8a31292441baf7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyDelay: 0.5
-  targetTags:
-  - Bottle
-  - Mask
+  speed: 20
+  maxLifetime: 3
+  rb: {fileID: 4490312380145612566}
